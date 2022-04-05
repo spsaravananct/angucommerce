@@ -1,0 +1,7 @@
+<owl-carousel-o [options]="customOptions">
+    <ng-template carouselSlide class="categories__item" *ngFor="let category of categories;" >
+        <div class="categories__item set-bg" [style.background-image]="'url('+imageurl+category.attributes.image.data.attributes.url+')'">
+            <h5><a href="#">{{category.attributes.name}}</a></h5>
+        </div>
+    </ng-template>                     
+</owl-carousel-o>
