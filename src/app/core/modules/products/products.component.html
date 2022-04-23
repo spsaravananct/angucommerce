@@ -1,0 +1,20 @@
+<div class="latest-product__text">
+    <h4>{{data.name}}</h4>
+    <div class="latest-product__slider owl-carousel owl-loaded owl-drag">
+        <owl-carousel-o [options]="customOptions" class="latest-product__slider">
+            <ng-template carouselSlide class="categories__item">
+                <div class="latest-prdouct__slider__item" *ngFor="let product of data.products.slice(0,3);">
+                    <a href="#" class="latest-product__item">
+                        <div class="latest-product__item__pic">
+                            <img src={{imageurl}}{{product.image.url}} alt="">
+                        </div>
+                        <div class="latest-product__item__text">
+                            <h6>{{product.name}}</h6>
+                            <span>${{product.price}}</span>
+                        </div> 
+                    </a>
+                </div>
+            </ng-template>
+        </owl-carousel-o>
+    </div>
+</div>

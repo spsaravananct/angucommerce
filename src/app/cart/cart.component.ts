@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ICart,CartTotal } from '../shared/models/cart.model';
+import { ICart,CartTotal, CartItem } from '../shared/models/cart.model';
 import { CartService } from './cart.service';
 import { environment } from 'src/environments/environment';
 
@@ -12,22 +12,24 @@ import { environment } from 'src/environments/environment';
 export class CartComponent implements OnInit {
 
 
-  cart$:Observable<ICart>;
-
-  cartTotal$:Observable<CartTotal>;
-  
   imageurl=environment.imageUrl;
 
   constructor(private cartservice: CartService) { }
 
   ngOnInit(): void {
-    this.cart$=this.cartservice.cart$;
-
-    this.cartTotal$=this.cartservice.cartTotal$;
+   
   }
 
-  removeCartItem(){
-    this.cartservice.deleteCart();
+  removeCartItem(item:CartItem){
+    this.cartservice.removeItemFromCart(item);
+  }
+
+  incrementItemQuantity(item:CartItem){
+    this.cartservice.incrementItemQuantity(item);
+  }
+
+  decrementItemQuantity(item:CartItem){
+    this.cartservice.decrementItemQuantity(item);
   }
 
 }

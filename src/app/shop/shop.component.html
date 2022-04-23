@@ -36,7 +36,7 @@
                     <div class="sidebar__item">
                         <h4>Shop By Category</h4>
                         <ul>
-                            <li *ngFor="let category of categories;" [ngClass]="(selectedcategory===category.id)?'active':''" (click)="onCategorySelected(category.id)"><a>{{category.attributes.name}}</a></li>
+                            <li *ngFor="let category of categories;" [ngClass]="(selectedcategory===category.id)?'active':''" (click)="onCategorySelected(category.id)"><a>{{category.name}}</a></li>
                         </ul>
                     </div>
                     <div class="sidebar__item">

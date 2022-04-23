@@ -1,0 +1,5 @@
+<ul *ngIf="(cartTotal$|async)">
+    <li>Subtotal <span>{{(cartTotal$|async)?.subtotal | currency}}</span></li>
+    <li>Shipping <span>{{(cartTotal$|async)?.shipping | currency}}</span></li>
+    <li>Total <span>{{(cartTotal$|async)?.total | currency}}</span></li>
+</ul>

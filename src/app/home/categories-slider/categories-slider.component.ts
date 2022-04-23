@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CategoryService } from '../../shop/category.service';
+import { CategoryService } from '../../core/services/category.service';
 import { OwlOptions } from 'ngx-owl-carousel-o';
 import { environment } from '../../../environments/environment';
 import { Category,CategoryData } from '../../shared/models/category.model';

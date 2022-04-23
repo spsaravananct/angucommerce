@@ -78,7 +78,7 @@
                               <a href="#"><i class="fa fa-linkedin"></i></a>
                               <a href="#"><i class="fa fa-pinterest-p"></i></a>
                           </div>
-                          <div class="header__top__right__language">
+                          <!-- <div class="header__top__right__language">
                               <img src="/assets/img/language.png" alt="">
                               <div>English</div>
                               <span class="arrow_carrot-down"></span>
@@ -86,9 +86,40 @@
                                   <li><a href="#">Spanis</a></li>
                                   <li><a href="#">English</a></li>
                               </ul>
-                          </div>
+                          </div> -->
                           <div class="header__top__right__auth">
-                              <a href="#"><i class="fa fa-user"></i> Login</a>
+                            
+                              <ng-container *ngIf="(currentUser$|async)===null">
+                                <nav class="navbar navbar-expand-lg navbar-dark bg-light">
+                                    <div class="container-fluid">
+                                      <a routerLink='/account/login'><i class="fa fa-user"></i> Login</a>
+                                      <a routerLink='/account/register'><i class="fa fa-user"></i> Register</a>
+                                    </div>
+                                  </nav>                               
+                              </ng-container>
+                              <ng-container *ngIf="(currentUser$|async)">
+                                <nav class="navbar navbar-expand-lg">
+                                    <div class="container-fluid pe-0">
+                                      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown" aria-controls="navbarNavDarkDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                                        <span class="navbar-toggler-icon"></span>
+                                      </button>
+                                      <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
+                                        <ul class="navbar-nav">
+                                          <li class="nav-item dropdown">
+                                            <a class="nav-link dropdown-toggle pe-0" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                               <i class="fa fa-user"></i> Welcome {{(currentUser$|async)?.username}}
+                                            </a>
+                                            <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarDarkDropdownMenuLink" style="left: 20px;">
+                                              <li><a class="dropdown-item" routerLink="/cart"><i class="fa fa-shopping-cart"></i> View Basket</a></li>
+                                              <li><a class="dropdown-item" routerLink="/orders"><i class="fa fa-history"></i> View Order</a></li>
+                                              <li><a class="dropdown-item" (click)="logout()" ><i class="fa fa-sign-out"></i> Logout</a></li>
+                                            </ul>
+                                          </li>
+                                        </ul>
+                                      </div>
+                                    </div>
+                                  </nav>
+                              </ng-container>
                           </div>
                       </div>
                   </div>

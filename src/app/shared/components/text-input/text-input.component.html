@@ -1,0 +1,10 @@
+<div class="form-outline mb-4">
+    <input [ngClass]="(controlDir && controlDir.control && controlDir.control.touched)? !controlDir.control.valid? 'is-invalid': 'is-valid': ''" [type]="type" (input)="onChange($event.target.value)" (blur)="onTouched()" id="{{label}}" #input class="form-control form-control-lg"
+      placeholder="{{label}}" />
+      <div class="invaild-feedback" *ngIf="(controlDir && controlDir.control && !controlDir.control.valid && controlDir.control.touched)">
+          <span *ngIf="controlDir.control.errors?.['required']">{{label}} is required</span>
+          <span *ngIf="controlDir.control.errors?.['pattern']">Invalid Email Address</span>
+          <span *ngIf="controlDir.control.errors?.['minlength']">Password Must be 6 to 8 Characters</span>
+          <span *ngIf="controlDir.control.errors?.['maxlength']">Password Must be 6 to 8 Characters</span>
+      </div>
+  </div>

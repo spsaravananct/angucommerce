@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
-import { Product } from '../shared/models/product.model';
+import { Product,ProductData } from '../shared/models/product.model';
 import { environment } from '../../environments/environment';
 import { ProductList } from '../shared/models/productlist.model';
-
 
 @Injectable({ 
   providedIn: 'root'
@@ -59,6 +58,15 @@ export class ProductService {
     return this.http
       .get<Product>(
         this.baseUrl+'products',{params:params}
+      )
+      .pipe(map(resp => resp));
+  }
+
+
+  getProduct(product_id:Number): Observable<ProductData> {
+    return this.http
+      .get<ProductData>(
+        this.baseUrl+'myproduct/'+ product_id
       )
       .pipe(map(resp => resp));
   }

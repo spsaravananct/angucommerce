@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { CategoryData, Product, ProductData,Meta } from '../shared/models/product.model';
-import { CategoryService } from 'src/app/shop/category.service';
+import { Product, ProductData,Meta } from '../shared/models/product.model';
+import { CategoryData} from '../shared/models/category.model';
+import { CategoryService } from 'src/app/core/services/category.service';
 import { ProductService } from 'src/app/shop/product.service';
 import { environment } from '../../environments/environment';
 import { Options,LabelType } from '@angular-slider/ngx-slider';
@@ -41,12 +42,6 @@ export class ShopComponent implements OnInit {
 
   minValue: number = 10;
   maxValue: number = 1000;
-  // options: Options = {
-  //   floor: 50,
-  //   ceil: 1000,
-  //   step: 50,
-  //   showTicks: true
-  // };
 
   options: Options = {
     floor: 10,
@@ -90,7 +85,8 @@ export class ShopComponent implements OnInit {
     this.categoryService.getCategories()
       .subscribe({
         next: (response:Category) => {
-          this.categories=[{"id":0,"attributes":{"name":"All","status":true,"sort_order":1,"slug":"all"}},...response.data];   
+          this.categories=[];  
+          this.categories=[{"id":0,"name":"All","status":true,"sort_order":1,"slug":"all","image":{"url":""}},...response.data];   
         },
         error: (e) => console.error(e)
       });

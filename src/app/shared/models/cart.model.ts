@@ -20,11 +20,10 @@ export interface Product {
     id: number
     name: string
     price: number
+    image:ImageData
 }
 
 export interface ImageData {
-    id: number
-    name: string
     url: string
 }
 

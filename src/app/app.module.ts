@@ -7,12 +7,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { ErrorCatchingInterceptor } from './core/interceptors/error-catching.interceptor';
+import { ErrorInterceptor } from './core/interceptors/error.interceptor';
 import { InformationComponent } from './core/pages/information/information.component';
 import { SharedModule } from './shared/shared.module';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { LoadingInterceptor } from './core/interceptors/loading.interceptors';
 import { CoreModule } from './core/core.module';
+import { JWTInterceptor } from './core/interceptors/jwt-interceptor';
 
 
 @NgModule({
@@ -33,12 +34,17 @@ import { CoreModule } from './core/core.module';
   providers: [
     {
         provide: HTTP_INTERCEPTORS,
-        useClass: ErrorCatchingInterceptor,
+        useClass: ErrorInterceptor,
         multi: true
     },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: LoadingInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: JWTInterceptor,
       multi: true
     }
 ],

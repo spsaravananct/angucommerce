@@ -5,48 +5,28 @@ export interface Product {
 
 export interface ProductData {
   id: number
-  attributes: ProductAttributes
-}
-
-export interface ProductAttributes {
   name: string
   description: string
   price: number
   slug: any
-  image: ProductImage
-  categories: Categories
+  image: Image
+  categories: Category[]
 }
 
-export interface ProductImage {
-  data: ImageData
-}
-
-export interface ImageData {
+export interface Image {
   id: number
-  attributes: ImageAttributes
-}
-
-export interface ImageAttributes {
-  name: string
-  alternativeText: string
-  caption: string
   url: string
 }
 
-export interface Categories {
-  data: CategoryData[]
-}
-
-export interface CategoryData {
+export interface Category {
   id: number
-  attributes: CategoryAttributes
+  name: string
+  image: CategoryImage
 }
 
-export interface CategoryAttributes {
-  name: string
-  status: boolean
-  sort_order: number
-  slug: string
+export interface CategoryImage {
+  id: number
+  url: string
 }
 
 export interface Meta {

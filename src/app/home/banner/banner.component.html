@@ -1,8 +1,8 @@
 <div *ngFor="let ban of banner;">  
-    <div [ngSwitch]="ban.attributes.location"> 
+    <div [ngSwitch]="ban.location"> 
         <div *ngSwitchCase="'home'">              
-            <div *ngFor="let banimages of ban.attributes.banner_images.data;">
-                <div class="hero__item set-bg" [style.background-image]="'url('+imageurl+banimages.attributes.image.data.attributes.url+')'">
+            <div *ngFor="let banimages of ban.banner_images;">
+                <div class="hero__item set-bg" [style.background-image]="'url('+imageurl+banimages.image.url+')'">
                     <div class="hero__text">
                         <span>FRUIT FRESH</span>
                         <h2>Vegetable <br />100% Organic</h2>
@@ -13,13 +13,13 @@
             </div>
         </div> 
         <div *ngSwitchCase="'homebottom1'" class="banner__pic">
-            <div *ngFor="let banimages of ban.attributes.banner_images.data;">
-                <img src={{imageurl+banimages.attributes.image.data.attributes.url}} alt=""> 
+            <div *ngFor="let banimages of ban.banner_images;">
+                <img src={{imageurl+banimages.image.url}} alt=""> 
              </div>
         </div> 
         <div *ngSwitchCase="'homebottom2'" class="banner__pic">
-            <div *ngFor="let banimages of ban.attributes.banner_images.data;">
-                <img src={{imageurl+banimages.attributes.image.data.attributes.url}} alt=""> 
+            <div *ngFor="let banimages of ban.banner_images;">
+                <img src={{imageurl+banimages.image.url}} alt=""> 
              </div>
         </div> 
     </div>

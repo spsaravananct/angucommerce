@@ -7,6 +7,7 @@ import { CategoriesSliderComponent } from './categories-slider/categories-slider
 import { FeaturedProductsComponent } from './featured-products/featured-products.component';
 import { CategoriesMenuComponent } from './categories-menu/categories-menu.component';
 import { SharedModule } from '../shared/shared.module';
+import { LayoutsModule } from '../core/layouts/layouts.module';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { SharedModule } from '../shared/shared.module';
   imports: [
     CommonModule,
     SharedModule,
-    HomeRoutingModule
+    HomeRoutingModule,
+    LayoutsModule
   ]
 })
 export class HomeModule { }

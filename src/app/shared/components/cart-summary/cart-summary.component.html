@@ -1,0 +1,46 @@
+<table style="width: 100%;
+text-align: center;
+">
+    <thead>
+        <tr>
+            <th class="shoping__product">Products</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Total</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody *ngIf="(cart$|async) ===null">
+        <tr >
+           <td colspan="5">There is no produtcs in your cart!</td> 
+        </tr>
+    </tbody>
+    <tbody *ngIf="(cart$|async) as cart">
+        <tr *ngFor="let item of cart.cart_items">
+            <td class="shoping__cart__item">
+                <img src="{{imageurl}}{{item.product.image.url}}" alt="" width="100" height="100" *ngIf="isCart" >
+                <h5>{{item.product.name}}</h5>
+            </td>
+            <td class="shoping__cart__price">
+                {{item.product.price | currency}}
+            </td>
+            <td class="shoping__cart__quantity">
+                <div class="quantity">
+                  <div class="quantity">
+                    <div class="pro-qty">
+                        <span class="dec qtybtn" *ngIf="isCart" (click)="decrementItemQuantity(item)">-</span>
+                        <input type="text" value="{{item.quantity}}" readonly>
+                        <span class="inc qtybtn" *ngIf="isCart"  (click)="incrementItemQuantity(item)">+</span>
+                    </div>
+                   </div>
+                </div>
+            </td>
+            <td class="shoping__cart__total">
+                {{item.product.price * item.quantity | currency}}
+            </td>
+            <td class="shoping__cart__item__close">
+                <span class="icon_close" *ngIf="isCart"  (click)="removeCartItem(item)"></span>
+            </td>
+        </tr>
+    </tbody>
+</table>

@@ -17,7 +17,6 @@ export class BannerComponent implements OnInit{
   location:string;
 
   ngOnInit(): void {
-    //console.log(this.location); 
     this.getBanner(this.location);
   }
 
@@ -30,7 +29,6 @@ export class BannerComponent implements OnInit{
       .subscribe({
         next: (response) => {
           this.banner=response.data;
-          //console.log(this.banner);      
         },
         error: (e) => console.error(e)
       });

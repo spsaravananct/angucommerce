@@ -18,6 +18,6 @@ export class SingleProductComponent implements OnInit {
   }
 
   addItemToCart(){
-    this.cartservice.addItemtoBasket(this.item);
+    this.cartservice.addItemtoCart(this.item);
   }
 }

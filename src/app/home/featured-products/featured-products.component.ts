@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CategoryService } from 'src/app/shop/category.service';
+import { CategoryService } from 'src/app/core/services/category.service';
 import { ProductService } from 'src/app/shop/product.service';
 import { environment } from '../../../environments/environment';
 import { Product,ProductData } from '../../shared/models/product.model';
@@ -36,15 +36,10 @@ export class FeaturedProductsComponent implements OnInit {
       .subscribe({
         next: (response:Product) => { 
           for (let index = 0; index < response.data.length; index++) {
-            for (let j = 0; j < response.data[index]['attributes']['categories'].data.length; j++) {
+            for (let j = 0; j < response.data[index]['categories'].length; j++) {
               this.categories.push({
-                id:response.data[index]['attributes']['categories'].data[j].id,
-                attributes:{
-                  name:response.data[index]['attributes']['categories'].data[j].attributes.name,                 
-                  status:response.data[index]['attributes']['categories'].data[j].attributes.status,
-                  sort_order:response.data[index]['attributes']['categories'].data[j].attributes.sort_order,
-                  slug:response.data[index]['attributes']['categories'].data[j].attributes.slug,
-                }
+                id:response.data[index]['categories'][j].id,
+                name:response.data[index]['categories'][j].name
               }
               );
             }          
@@ -56,8 +51,8 @@ export class FeaturedProductsComponent implements OnInit {
                   map.set(item.id, true);    // set any value to Map
                   result.push({
                       id: item.id,
-                      name: item.attributes.name,
-                      slug:item.attributes.slug
+                      name: item.name,
+                      slug:item.slug
                   });
               }
           }

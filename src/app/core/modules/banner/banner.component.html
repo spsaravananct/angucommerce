@@ -1,0 +1,10 @@
+<div *ngFor="let bannerimages of data.bannerimages;">
+    <div class="hero__item set-bg" [style.background-image]="'url('+imageurl+bannerimages.image.url+')'">
+        <div class="hero__text">
+            <span>{{data.name}}</span>
+            <h2>Vegetable <br />100% Organic</h2>
+            <p>Free Pickup and Delivery Available</p>
+            <a href="#" class="primary-btn">SHOP NOW</a>
+        </div>
+    </div>
+</div>

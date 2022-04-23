@@ -30,8 +30,8 @@ export class InformationComponent implements OnInit {
     this.informationService.getSingle(id)
       .subscribe({
         next: (response) => {       
-          this.title=response.data.attributes.title;
-          this.content=response.data.attributes.content;
+          this.title=response.title;
+          this.content=response.content;
         },
         error: (e) => console.error(e)
       });

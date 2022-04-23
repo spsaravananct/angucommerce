@@ -4,6 +4,8 @@ import { BehaviorSubject, catchError, map, Observable, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Cart, ICart, CartItem, CartTotal } from '../shared/models/cart.model';
 import {ProductData} from '../shared/models/product.model'
+import { DeliveryMethod, DeliveryMethodData } from '../shared/models/deliverymethod.model';
+import { ToastrService } from 'ngx-toastr';
 @Injectable({
   providedIn: 'root'
 })
@@ -17,14 +19,20 @@ export class CartService {
 
   baseUrl=environment.baseUrl;
 
+  shipping=0;
+
   private cartSource=new BehaviorSubject<ICart>(null!);
   cart$=this.cartSource.asObservable();
 
   private cartTotalSource=new BehaviorSubject<CartTotal>(null!);
   cartTotal$=this.cartTotalSource.asObservable();
   
-  constructor(private http: HttpClient) {  
-    //console.log(this.getCurrentCartValue());
+  constructor(private http: HttpClient,private toastr:ToastrService) {  
+  }
+
+  setShippingPrice(deliveryMethod:DeliveryMethodData){
+    this.shipping=deliveryMethod.price;
+    this.calculateTotals();
   }
 
   getCart(cartId:String): Observable<ICart> {
@@ -33,7 +41,6 @@ export class CartService {
          map((cart:ICart)=>{
           this.cartSource.next(cart);
           this.calculateTotals();
-          //console.log(this.getCurrentCartValue());
           return cart;
          })
        );
@@ -53,37 +60,27 @@ export class CartService {
         "cart_items":crt_items
       }
     }
-    console.log(cart.cart_items.length);
-    console.log(cart);
-    console.log(newcart);
 
     return this.http.post<ICart>(this.baseUrl + 'setcart', newcart, this.httpOptions)
     .subscribe(
-      (response:ICart) => {
-        console.log(response);
+      (response:ICart) => {      
         this.cartSource.next(response);
         this.calculateTotals();
+        return true;
       }
     )
   }
-
-  deleteCart(){
-    this.cartSource.next(null!);
-    this.cartTotalSource.next(null!);
-    localStorage.removeItem('cart_id');
-  }
-
 
   getCurrentCartValue(){
     return this.cartSource.value;
   }
 
-  addItemtoBasket(item:ProductData,quantity=1){
-    //console.log(this.getCurrentCartValue());
-    const itemToAdd:CartItem=this.mapProductItemToBasketItem(item,quantity);
+  addItemtoCart(item:ProductData,quantity=1){
+    const itemToAdd:CartItem=this.mapProductItemToCartItem(item,quantity);
     const cart= this.getCurrentCartValue() ?? this.createCart();
     cart.cart_items=this.addOrUpdateItem(cart.cart_items,itemToAdd,quantity); 
     this.setCart(cart);
+    this.toastr.success('Product Added To Cart');
   }
 
   addOrUpdateItem(items: CartItem[], itemToAdd: CartItem, quantity: number):CartItem[]{
@@ -103,34 +100,69 @@ export class CartService {
     return cart;
   }
 
-  mapProductItemToBasketItem(item: ProductData, quantity: number): CartItem {  
+  mapProductItemToCartItem(item: ProductData, quantity: number): CartItem {  
     return {
       product_id:item.id,
       quantity,
       product:{
         id: item.id,
-        name: item.attributes.name,
-        price: item.attributes.price
+        name: item.name,
+        price: item.price,
+        image:{
+          url:''
+        }
       }
     }
   }
 
-  errorHandler(error:any) {
-    let errorMessage = '';
-    if(error.error instanceof ErrorEvent) {
-      errorMessage = error.error.message;
-    } else {
-      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
-    }
-    return throwError(errorMessage);
-  }
-
   calculateTotals(){
     const cart=this.getCurrentCartValue();
-    const shipping=0;
+    const shipping=this.shipping;
     const subtotal=cart.cart_items.reduce((a,b)=>(b.product.price*b.quantity)+a,0);
     const total =subtotal+shipping;
-    console.log(subtotal);
     this.cartTotalSource.next({shipping,subtotal,total});
+  }
+
+  incrementItemQuantity(item:CartItem){
+    const cart=this.getCurrentCartValue();
+    const foundItemIndex=cart.cart_items.findIndex(i=>i.product_id===item.product_id);
+    cart.cart_items[foundItemIndex].quantity++;
+    this.setCart(cart);
+  }
+
+  decrementItemQuantity(item:CartItem){
+    const cart=this.getCurrentCartValue();
+    const foundItemIndex=cart.cart_items.findIndex(i=>i.product_id===item.product_id);
+    if(cart.cart_items[foundItemIndex].quantity>1){
+      cart.cart_items[foundItemIndex].quantity--; 
+      this.setCart(cart);
+    }else{
+      this.removeItemFromCart(item);
+    }
+  }
+
+  removeItemFromCart(item: CartItem) {
+    const cart=this.getCurrentCartValue();
+    if(cart.cart_items.some(x=>x.product_id===item.product_id)){
+      cart.cart_items=cart.cart_items.filter(i=>i.product_id!==item.product_id);
+      if(cart.cart_items.length>0){
+        this.setCart(cart);
+      }else{
+        this.deleteCart(cart);
+      }
+    }
+  }
+
+  deleteCart(cart:ICart){
+    return this.http.delete<ICart>(this.baseUrl + 'deletecart?cart_id='+cart.cart_id)
+    .subscribe(
+      (response:ICart) => {
+        this.cartSource.next(null!);
+        this.cartTotalSource.next(null!);
+        localStorage.removeItem('cart_id');
+      },error =>{
+        console.log(error);
+      }
+    )
   }
 }

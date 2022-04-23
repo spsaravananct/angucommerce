@@ -1,0 +1,10 @@
+<div class="banner_module" *ngIf="modules.banner_modules?.length">
+    <div *ngFor="let data of modules.banner_modules" >
+        <app-banner [data]="data"></app-banner>
+    </div>
+</div>
+<div class="product_modules row" *ngIf="modules.product_list_modules?.length">
+    <div class="col-lg-4 col-md-6" *ngFor="let data of modules.product_list_modules" >
+        <app-products [data]="data"></app-products>
+    </div>
+</div>
